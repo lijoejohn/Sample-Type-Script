@@ -1,0 +1,103 @@
+.app-wrap {
+	height: 100%;
+	background-color: #fff;
+	min-height: 100vh;
+}
+.left-bar {
+	border-right: 2px solid #cccccc;
+	@media (max-width: 576px) {
+		border-right: none !important;
+	}
+	padding-left: 18px !important;
+}
+.right-bar {
+	padding-left: 18px !important;
+}
+.left-bar-wrap {
+	min-height: 350px;
+}
+.card-block {
+	@media (max-width: 576px) {
+		margin-top: 10px !important;
+		margin-left: 0px !important;
+	}
+	.card-item {
+		min-width: 200px !important;
+		min-height: 100px !important;
+		margin-bottom: 40px;
+	}
+	.language-name {
+		padding-left: 3px !important;
+	}
+	.flag-box {
+		width: 14px;
+		height: 10px;
+		img {
+			width: 14px;
+			height: 10px;
+		}
+	}
+	margin-right: 5px !important;
+}
+.hide {
+	display: none;
+	opacity: 0;
+	transition: visibility 0.3s, opacity 0.5s linear;
+}
+.show {
+	display: block;
+	opacity: 1;
+	transition: visibility 0.3s, opacity 0.5s linear;
+}
+
+.close {
+	float: right;
+
+	line-height: 1;
+	opacity: 0.5;
+}
+
+// Additional properties for button version
+// iOS requires the button element instead of an anchor tag.
+// If you want the anchor version, it requires `href="#"`.
+// See https://developer.mozilla.org/en-US/docs/Web/Events/click#Safari_Mobile
+
+// stylelint-disable-next-line selector-no-qualifying-type
+button.close {
+	padding: 0;
+	background-color: transparent;
+	border: 0;
+	appearance: none;
+}
+
+// Future-proof disabling of clicks on `<a>` elements
+
+// stylelint-disable-next-line selector-no-qualifying-type
+a.close.disabled {
+	pointer-events: none;
+}
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+.rbt-input {
+	background-color: #fff !important;
+}
+.rbt-token {
+	background: #e7e7e7 !important;
+	border-radius: 5px !important;
+}
+.remove-language,
+.logout {
+	float: right;
+}
+.logout {
+	margin-right: 15px;
+}
