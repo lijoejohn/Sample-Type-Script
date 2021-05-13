@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 import { FormGroup, Button, Row, Col, Container } from "react-bootstrap";
-import { Formik, Field, Form, FormikHelpers } from "formik";
+import { Formik, Field, Form } from "formik";
 
 import Loader from "../../utils/loader";
 import { loginFunction } from "../../utils/helper";
-
+import Toaster from "../sharedComponents/toaster";
 import "./login.scss";
 
 interface Values {
@@ -15,12 +15,14 @@ interface Values {
 
 const Login = (): JSX.Element => {
 	const [showLoader, setLoader] = useState(false);
+	const [showToaster, setShowToaster] = useState<boolean>(false);
 
-	const loginAction = (values: { email: string; password?: string }): void => {
+	const loginAction = (values: { email: string; password: string }): void => {
 		setLoader(true);
 		setTimeout(() => {
 			setLoader(false);
-			loginFunction(values);
+			const proceed = loginFunction(values);
+			proceed ? (window.location.href = "/") : setShowToaster(true);
 		}, 500);
 	};
 	return (
@@ -37,9 +39,9 @@ const Login = (): JSX.Element => {
 								<Formik
 									initialValues={{
 										email: "admin@test.com",
-										password: "123456",
+										password: "@123456!",
 									}}
-									onSubmit={(values: Values, { setSubmitting }: FormikHelpers<Values>) => {
+									onSubmit={(values: Values) => {
 										loginAction(values);
 									}}>
 									<Form>
@@ -68,6 +70,9 @@ const Login = (): JSX.Element => {
 					</div>
 				</div>
 			</div>
+			<Toaster
+				{...{ showToaster, setShowToaster, message: "Woohoo, You have entered an invalid username or password!" }}
+			/>
 		</Container>
 	);
 };

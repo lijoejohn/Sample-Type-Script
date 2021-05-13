@@ -5,10 +5,13 @@ export const logout = (): void => {
 	window.location.href = "/login";
 };
 
-export const loginFunction = (values: { email: string; password?: string }): void => {
-	// eslint-disable-next-line no-console
-	localStorage.setItem(LSVariable, "Admin");
-	window.location.href = "/";
+export const loginFunction = (values: { email; password: string }): boolean => {
+	if (values.email === "admin@test.com" && values.password === "@123456!") {
+		localStorage.setItem(LSVariable, "Admin");
+		return true;
+	} else {
+		return false;
+	}
 };
 
 export const getLsValue = (key: string): string => {
