@@ -67,3 +67,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
     Node-sass (scss compiler)
     eslint/prettier (Code formatting)
     Bootstrap-typeahead (Multi select lookup)
+
+### `Note`
+
+    State is managed in the component state itself , not integrated with any centralised state management library (redux/flux). Since the application logic is not complex and the data flow between components is simple,
