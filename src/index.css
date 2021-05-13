@@ -1,18 +1,6 @@
-@import url(//db.onlinewebfonts.com/c/042fdc0ad9bf83440df6afe1bbadf684?family=Graphik+LC+TT);
-
-@font-face {
-	font-family: "Graphik LC TT";
-	src: url("http://db.onlinewebfonts.com/t/042fdc0ad9bf83440df6afe1bbadf684.eot"); /* IE9*/
-	src: url("http://db.onlinewebfonts.com/t/042fdc0ad9bf83440df6afe1bbadf684.eot?#iefix") format("embedded-opentype"),
-		/* IE6-IE8 */ url("http://db.onlinewebfonts.com/t/042fdc0ad9bf83440df6afe1bbadf684.woff2") format("woff2"),
-		/* chrome firefox */ url("http://db.onlinewebfonts.com/t/042fdc0ad9bf83440df6afe1bbadf684.woff") format("woff"),
-		/* chrome firefox */ url("http://db.onlinewebfonts.com/t/042fdc0ad9bf83440df6afe1bbadf684.ttf") format("truetype"),
-		/* chrome firefox opera Safari, Android, iOS 4.2+*/
-			url("http://db.onlinewebfonts.com/t/042fdc0ad9bf83440df6afe1bbadf684.svg#Graphik LC TT") format("svg"); /* iOS 4.1- */
-}
 body {
 	margin: 0;
-	font-family: "Graphik LC TT";
+	font-family: "Graphik";
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-size: 14px;

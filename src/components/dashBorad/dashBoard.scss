@@ -40,12 +40,12 @@
 	margin-right: 5px !important;
 }
 .hide {
-	display: none;
+	visibility: none;
 	opacity: 0;
 	transition: visibility 0.3s, opacity 0.5s linear;
 }
 .show {
-	display: block;
+	visibility: visible;
 	opacity: 1;
 	transition: visibility 0.3s, opacity 0.5s linear;
 }
