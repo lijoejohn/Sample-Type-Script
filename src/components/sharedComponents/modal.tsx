@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes, { InferProps } from "prop-types";
 import { Modal, Button } from "react-bootstrap";
+
 const AppModal = ({
 	onHide,
 	show,
@@ -11,7 +12,7 @@ const AppModal = ({
 	component,
 }: InferProps<typeof AppModal.propTypes>): JSX.Element => {
 	return (
-		<Modal onHide={onHide} show={show}>
+		<Modal data-test="popup" onHide={onHide} show={show}>
 			<Modal.Header>
 				<Modal.Title className="modal-heading">{title}</Modal.Title>
 			</Modal.Header>

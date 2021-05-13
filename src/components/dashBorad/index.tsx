@@ -1,29 +1,48 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { some } from "lodash";
 
 import { Container, Row, Col, Button, FormGroup, Form } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import { some } from "lodash";
-
-import Loader from "../../utils/loader";
-import "./dashBoard.scss";
 
 import { availableLanguages, availableProjects } from "../../data/mockData";
-
 import { getLsValue, setLsValue } from "../../utils/helper";
 import { schemaMapper, globalLanguagesSet } from "../../constants/common";
 
+import Loader from "../sharedComponents/loader";
 import Toaster from "../sharedComponents/toaster";
 import AppModal from "../sharedComponents/modal";
+
 import { ProjectInfo, LanguageInfo, Header, getLanguageObject } from "./helper";
 
+import "./dashBoard.scss";
 const DashBoard = (): JSX.Element => {
+	/**
+	 * Loader display state
+	 */
 	const [showLoader, setLoader] = useState<boolean>(false);
+	/**
+	 * Language info expand/collaps state
+	 */
 	const [expanded, setExpanded] = useState<boolean>(true);
+	/**
+	 * Add language modal popup state
+	 */
 	const [addMode, setAddMode] = useState<boolean>(false);
+	/**
+	 * Delete confirmation modal popup state
+	 */
 	const [showConfirm, setShowConfirm] = useState<boolean>(false);
+	/**
+	 * Validation toaster display state
+	 */
 	const [showToaster, setShowToaster] = useState<boolean>(false);
-
+	/**
+	 * Active record - for language add it will be the parrent project ID , in the case of delete language it will be the language ID
+	 */
 	const [activeRecord, setActiveRecord] = useState<string>("");
+	/**
+	 * Languages under the client for all the projects
+	 */
 	const [projectLanguages, setProjectLanguages] = useState<
 		Array<{
 			languageName: string;
@@ -35,7 +54,9 @@ const DashBoard = (): JSX.Element => {
 			languageKey: string;
 		}>
 	>([]);
-
+	/**
+	 * Languages selecetd for adding from popup
+	 */
 	const [multiSelections, setMultiSelections] = useState<
 		Array<{
 			languageKey: string;
@@ -43,7 +64,9 @@ const DashBoard = (): JSX.Element => {
 			flag: string;
 		}>
 	>([]);
-
+	/**
+	 * Global language list
+	 */
 	const [globalLanguages, setGlobalLanguages] =
 		useState<
 			Array<{
@@ -52,12 +75,16 @@ const DashBoard = (): JSX.Element => {
 				flag: string;
 			}>
 		>(globalLanguagesSet);
-
+	/**
+	 * Function to fetch all data from local storage and set to state
+	 */
 	const getAppData = useCallback((): void => {
 		setProjectLanguages(JSON.parse(getLsValue(schemaMapper.projectLanguages)));
 		setLoader(false);
 	}, []);
-
+	/**
+	 * Function to fetch all data from mock data file and store it in storage then set to state
+	 */
 	const initAppData = useCallback((): void => {
 		setProjectLanguages(availableLanguages);
 		setLsValue(schemaMapper.projectLanguages, JSON.stringify(availableLanguages));
@@ -68,7 +95,9 @@ const DashBoard = (): JSX.Element => {
 		setLoader(true);
 		getLsValue(schemaMapper.projectLanguages) ? getAppData() : initAppData();
 	}, [getAppData, initAppData]);
-
+	/**
+	 * Delete button click
+	 */
 	const confirmDelete = (key: string): void => {
 		setActiveRecord(key);
 		setShowConfirm(true);
@@ -79,11 +108,15 @@ const DashBoard = (): JSX.Element => {
 	};
 
 	const showAddPopUp = (projectKey: string): void => {
+		//Reset all previously selecetd values
 		setMultiSelections([]);
+		//Filter the existing langugaes for the project
 		const existingLanguages = projectLanguages.filter((language) => language.projectKey === projectKey);
+		//Bypass the existing languages from he global list
 		const languageOptions = globalLanguagesSet.filter(
 			(language) => !some(existingLanguages, ["languageKey", language.languageKey])
 		);
+		//Set dropdown items
 		setGlobalLanguages(languageOptions);
 		setAddMode(true);
 		setActiveRecord(projectKey);
@@ -94,19 +127,25 @@ const DashBoard = (): JSX.Element => {
 	};
 
 	const doDeleteAction = (): void => {
+		//create new data set
 		const updatedDataSet = projectLanguages.filter((language) => language.languageKey !== activeRecord);
+		//set state
 		setProjectLanguages(updatedDataSet);
+		//set localstorage
 		setLsValue(schemaMapper.projectLanguages, JSON.stringify(updatedDataSet));
 		handleDeleteConfirmClose();
 	};
 
 	const doAddAction = (): void => {
 		if (multiSelections.length) {
+			//create new data set for push to list
 			const newLanguageSet = multiSelections.map((language) => {
 				return getLanguageObject(language, activeRecord);
 			});
 			const updatedDataSet = [...projectLanguages, ...newLanguageSet];
+			//set state
 			setProjectLanguages(updatedDataSet);
+			//set localstorage
 			setLsValue(schemaMapper.projectLanguages, JSON.stringify(updatedDataSet));
 			handleClose();
 		} else {
@@ -116,7 +155,7 @@ const DashBoard = (): JSX.Element => {
 
 	return (
 		<Container>
-			<div className="container">
+			<div data-test="dashboard-wrap" className="container">
 				<div className="app-wrap">
 					{showLoader ? <Loader /> : null}
 					<Row className="justify-content-md-center">
@@ -138,11 +177,13 @@ const DashBoard = (): JSX.Element => {
 												.map((language, subIndex) => (
 													<LanguageInfo
 														key={subIndex}
-														{...{ language, index: subIndex, expanded, confirmDelete }}
+														{...{ language, index: subIndex, expanded, confirmDelete, showConfirm }}
 													/>
 												))}
 											<Col className="card-item" lg="4" sm="4" md="4" xs="4">
 												<Button
+													disabled={addMode}
+													data-test="add-language"
 													onClick={() => {
 														showAddPopUp(project.projectKey);
 													}}
@@ -166,7 +207,7 @@ const DashBoard = (): JSX.Element => {
 						show: addMode,
 						title: "Add languages",
 						component: (
-							<Form>
+							<Form data-test="add-form">
 								<FormGroup controlId="browserInput">
 									<Typeahead
 										className=""

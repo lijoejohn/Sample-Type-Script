@@ -1,3 +1,6 @@
+/**
+ * Sample projects to display in dash board left side panel
+ */
 export const availableProjects = [
 	{
 		projectKey: "roamer_app",
@@ -19,6 +22,9 @@ export const availableProjects = [
 	},
 ];
 
+/**
+ * Default languages for loading in dashbord on the initial time application load
+ */
 export const availableLanguages = [
 	{
 		projectKey: "roamer_app",

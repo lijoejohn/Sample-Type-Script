@@ -1,5 +1,14 @@
+/**
+ * Default colors to plot the progress bar
+ */
 export const colors = ["green", "red", "orange", "blue"];
+/**
+ * Data mapping key
+ */
 export const schemaMapper = { projectLanguages: "projectLanguages" };
+/**
+ * Global languages in the system , that we can add to the projects
+ */
 export const globalLanguagesSet = [
 	{ languageKey: "albanian", languageName: "Albanian", flag: "flag-albania.png" },
 	{ languageKey: "dutch", languageName: "Dutch", flag: "flag-belgium.png" },

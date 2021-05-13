@@ -1,10 +1,13 @@
 import React from "react";
 import PropTypes, { InferProps } from "prop-types";
 import { Col, Row, Button } from "react-bootstrap";
+import { random } from "lodash";
+
 import { ProgressBar, Icon, Flag } from "../sharedComponents/common";
 import AppToolTip from "../sharedComponents/tooltip";
-import { logout } from "../../utils/helper";
-import { random } from "lodash";
+import { setLsValue } from "../../utils/helper";
+
+const LSVariable: string = process.env.REACT_APP_LS_VAR || "";
 
 export const Info = ({
 	label = "",
@@ -31,6 +34,7 @@ export const LanguageInfo = ({
 	index = 0,
 	expanded = true,
 	confirmDelete,
+	showConfirm,
 }: InferProps<typeof LanguageInfo.propTypes>): JSX.Element => {
 	return (
 		<Col key={index} className="card-item" lg="4" sm="4" md="4" xs="4">
@@ -38,13 +42,15 @@ export const LanguageInfo = ({
 			<span className="sub-heading language-name hand">{language.languageName}</span>
 			<AppToolTip
 				component={
-					<span onClick={() => confirmDelete(language.languageKey)} className="remove-language label hand">
+					<span
+						data-test="remove-language"
+						onClick={() => confirmDelete(language.languageKey)}
+						className={`remove-language label hand ${showConfirm ? "disabled" : ""}`}>
 						Remove
 					</span>
 				}
 				message="Remove"
 			/>
-
 			<ProgressBar donePercent={language.donePercent} />
 			<Row className={`justify-content-md-center mt-4 ${expanded ? "show" : "hide"}`}>
 				<Info label={"Done"} value={`${language.donePercent}%`} breakPoint={4} />
@@ -59,6 +65,7 @@ LanguageInfo.propTypes = {
 	index: PropTypes.number,
 	expanded: PropTypes.bool,
 	confirmDelete: PropTypes.func,
+	showConfirm: PropTypes.bool,
 };
 
 export const ProjectInfo = ({ project }: InferProps<typeof ProjectInfo.propTypes>): JSX.Element => {
@@ -102,6 +109,10 @@ ProjectInfo.propTypes = {
 };
 
 export const Header = ({ setExpanded, expanded }: InferProps<typeof Header.propTypes>): JSX.Element => {
+	const onLogout = () => {
+		setLsValue(LSVariable, "");
+		window.location.reload();
+	};
 	return (
 		<>
 			<Button className="btn btn-lg btn-primary">
@@ -121,7 +132,7 @@ export const Header = ({ setExpanded, expanded }: InferProps<typeof Header.propT
 			/>
 			<AppToolTip
 				component={
-					<span onClick={logout} className="logout label hand">
+					<span data-test="logout" onClick={onLogout} className="logout label hand">
 						Logout
 					</span>
 				}

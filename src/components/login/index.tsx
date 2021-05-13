@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import { FormGroup, Button, Row, Col, Container } from "react-bootstrap";
 import { Formik, Field, Form } from "formik";
 
-import Loader from "../../utils/loader";
+import Loader from "../sharedComponents/loader";
 import { loginFunction } from "../../utils/helper";
 import Toaster from "../sharedComponents/toaster";
+
 import "./login.scss";
 
 interface Values {
@@ -16,14 +17,14 @@ interface Values {
 const Login = (): JSX.Element => {
 	const [showLoader, setLoader] = useState(false);
 	const [showToaster, setShowToaster] = useState<boolean>(false);
-
-	const loginAction = (values: { email: string; password: string }): void => {
+	/**
+	 * Login Action for the Fomik on submit
+	 */
+	const loginAction = async (values: { email: string; password: string }) => {
 		setLoader(true);
-		setTimeout(() => {
-			setLoader(false);
-			const proceed = loginFunction(values);
-			proceed ? (window.location.href = "/") : setShowToaster(true);
-		}, 500);
+		setLoader(false);
+		const proceed = await loginFunction(values);
+		proceed ? (window.location.href = "/") : setShowToaster(true);
 	};
 	return (
 		<Container>
@@ -44,15 +45,22 @@ const Login = (): JSX.Element => {
 									onSubmit={(values: Values) => {
 										loginAction(values);
 									}}>
-									<Form>
+									<Form data-test="form-login">
 										<FormGroup controlId="formBasicEmail">
 											<span>Email address</span>
-											<Field className="form-control" id="email" name="email" placeholder="Enter email" />
+											<Field
+												data-test="email"
+												className="form-control"
+												id="email"
+												name="email"
+												placeholder="Enter email"
+											/>
 										</FormGroup>
 
 										<FormGroup controlId="formBasicPassword">
 											<span>Password</span>
 											<Field
+												data-test="password"
 												className="form-control"
 												type="password"
 												id="password"
@@ -61,7 +69,9 @@ const Login = (): JSX.Element => {
 											/>
 										</FormGroup>
 										<FormGroup className="ta-center" controlId="formBasicSubmit">
-											<Button type="submit">Login</Button>
+											<Button type="submit" data-test="login-button">
+												Login
+											</Button>
 										</FormGroup>
 									</Form>
 								</Formik>

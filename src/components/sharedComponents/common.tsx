@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes, { InferProps } from "prop-types";
 import { sample } from "lodash";
+
 import { colors } from "../../constants/common";
 import AppToolTip from "./tooltip";
 
