@@ -3,7 +3,7 @@ import PropTypes, { InferProps } from "prop-types";
 import { Col, Row, Button } from "react-bootstrap";
 import { random } from "lodash";
 
-import { ProgressBar, Icon, Flag } from "../sharedComponents/common";
+import { ProgressBar, Icon } from "../sharedComponents/common";
 import AppToolTip from "../sharedComponents/tooltip";
 import { setLsValue } from "../../utils/helper";
 
@@ -27,45 +27,6 @@ Info.propTypes = {
 	value: PropTypes.any,
 	className: PropTypes.string,
 	breakPoint: PropTypes.number,
-};
-
-export const LanguageInfo = ({
-	language,
-	index = 0,
-	expanded = true,
-	confirmDelete,
-	showConfirm,
-}: InferProps<typeof LanguageInfo.propTypes>): JSX.Element => {
-	return (
-		<Col key={index} className="card-item" lg="4" sm="4" md="4" xs="4">
-			<Flag flag={language.flag} />
-			<span className="sub-heading language-name hand">{language.languageName}</span>
-			<AppToolTip
-				component={
-					<span
-						data-test="remove-language"
-						onClick={() => confirmDelete(language.languageKey)}
-						className={`remove-language label hand ${showConfirm ? "disabled" : ""}`}>
-						Remove
-					</span>
-				}
-				message="Remove"
-			/>
-			<ProgressBar donePercent={language.donePercent} />
-			<Row className={`justify-content-md-center mt-4 ${expanded ? "show" : "hide"}`}>
-				<Info label={"Done"} value={`${language.donePercent}%`} breakPoint={4} />
-				<Info label={"WORDS TO DO"} className="color-blue" value={language.wordsToDo} breakPoint={4} />
-				<Info label={"UNVERIFIED"} className="color-blue" value={language.unverified} breakPoint={4} />
-			</Row>
-		</Col>
-	);
-};
-LanguageInfo.propTypes = {
-	language: PropTypes.object,
-	index: PropTypes.number,
-	expanded: PropTypes.bool,
-	confirmDelete: PropTypes.func,
-	showConfirm: PropTypes.bool,
 };
 
 export const ProjectInfo = ({ project }: InferProps<typeof ProjectInfo.propTypes>): JSX.Element => {
